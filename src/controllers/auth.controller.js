@@ -42,7 +42,7 @@ const login = catchAsync(async (req, res) => {
   const otp = await authService.generateOTP(phone);
   console.log(otp);
   let hash = otpTool.createNewOTP(phone,otp,key);
-  await emailService.sendOTPEmail('monika.arora@graffersid.com', otp);
+  //await emailService.sendOTPEmail('monika.arora@graffersid.com', otp);
   const tokens = await tokenService.generateAuthTokens(user);
   res.send({ user, tokens,hash });
 });
