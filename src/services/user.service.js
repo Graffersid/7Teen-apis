@@ -8,6 +8,7 @@ const ApiError = require('../utils/ApiError');
  * @returns {Promise<User>}
  */
 const createUser = async (userBody) => {
+  console.log(userBody.phon);
   if (await User.isPhoneTaken(userBody.phone)) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Phone already taken');
   }
@@ -38,7 +39,7 @@ const getUserById = async (id) => {
 };
 
 /**
- * Get user by email
+ * Get user by phone
  * @param {string} email
  * @returns {Promise<User>}
  */
@@ -53,13 +54,20 @@ const getUserByPhone = async (phone) => {
  * @returns {Promise<User>}
  */
 const updateUserById = async (userId, updateBody) => {
+ 
   const user = await getUserById(userId);
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
-  if (updateBody.email && (await User.isEmailTaken(updateBody.email, userId))) {
+
+  var parent_name=updateBody.parent_name;
+  var parent_number=updateBody.parent_number;
+  /*if (updateBody.email && (await User.isEmailTaken(updateBody.email, userId))) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
-  }
+  }*/
+  updateBody.parent_username = parent_name.substring(0, 4)+""+parent_number.substr(parent_number.length - 4);
+  console.log(updateBody.parent_username);
+
   Object.assign(user, updateBody);
   await user.save();
   return user;
@@ -79,6 +87,15 @@ const deleteUserById = async (userId) => {
   return user;
 };
 
+/**
+ * getChilds
+ * @param {string} email
+ * @returns {Promise<User>}
+ */
+ const getChilds = async (user) => {
+  return User.find({ parent_number:user.phone });
+};
+
 module.exports = {
   createUser,
   queryUsers,
@@ -86,4 +103,5 @@ module.exports = {
   updateUserById,
   deleteUserById,
   getUserByPhone,
+  getChilds,
 };

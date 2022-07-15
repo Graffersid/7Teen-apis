@@ -27,6 +27,10 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isParentVerified: {
+      type: Boolean,
+      default: false,
+    },
     parent_name: {
       type: String,
       required: false,

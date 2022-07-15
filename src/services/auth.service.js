@@ -123,6 +123,27 @@ const verifyOTP = async (verified,phone) => {
     return(otp);
 };
 
+/**
+ * Verify user
+ * @param {string} user object
+ * @returns {Promise<User>}
+ */
+ const validateUser = async (user) => {
+  //const user = await userService.getUserByPhone(phone);
+
+  if (!user.isEmailVerified ) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'User OTP not Verified');
+  }
+  else if( !user.isParentVerified ){
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Pending Parent Approval');
+  }
+  else{
+    return true;
+  }
+    
+};
+
+
 module.exports = {
   loginUserWithPhone,
   logout,
@@ -130,4 +151,5 @@ module.exports = {
   resetPassword,
   verifyOTP,
   generateOTP,
+  validateUser,
 };
