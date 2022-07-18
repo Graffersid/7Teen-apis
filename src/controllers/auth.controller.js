@@ -9,6 +9,7 @@ const { authService, userService, tokenService, emailService } = require('../ser
 
 const register = catchAsync(async (req, res) => {
 let phone = req.body.phone;  
+let email = req.body.email;  
 //console.log(phone);
 const otp = await authService.generateOTP(phone);
 
@@ -17,7 +18,7 @@ const otp = await authService.generateOTP(phone);
   const user = await userService.createUser(req.body);
   //console.log(user);  
   const tokens = await tokenService.generateAuthTokens(user);
-  await emailService.sendOTPEmail('monika.arora@graffersid.com', otp);
+  await emailService.sendOTPEmail(email, otp);
   console.log(hash);  
   res.status(httpStatus.CREATED).send({ user, tokens,hash });
 });
