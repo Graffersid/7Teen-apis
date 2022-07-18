@@ -1,5 +1,4 @@
 const express = require('express');
-
 const validate = require('../../middlewares/validate');
 const authValidation = require('../../validations/auth.validation');
 const authController = require('../../controllers/auth.controller');
@@ -8,9 +7,6 @@ const auth = require('../../middlewares/auth');
 const router = express.Router();
 
 router.post('/register', validate(authValidation.register), authController.register);
-router.post('/parent-register', validate(authValidation.register), authController.parentRegister);
-router.post('/resend-otp', validate(authValidation.register), authController.resendOtp);
-router.post('/verify_otp', validate(authValidation.verifyotp), authController.verifyotp);
 router.post('/login', validate(authValidation.login), authController.login);
 router.post('/logout', validate(authValidation.logout), authController.logout);
 router.post('/refresh-tokens', validate(authValidation.refreshTokens), authController.refreshTokens);
@@ -18,12 +14,6 @@ router.post('/forgot-password', validate(authValidation.forgotPassword), authCon
 router.post('/reset-password', validate(authValidation.resetPassword), authController.resetPassword);
 router.post('/send-verification-email', auth(), authController.sendVerificationEmail);
 router.post('/verify-email', validate(authValidation.verifyEmail), authController.verifyEmail);
-
-
-/*router
-  .route('/')
-  .post(auth('parent-register'), validate(authValidation.register), authController.parentRegister)
-  .get(auth('parent-login'), validate(authValidation.login), authController.parentLogin);*/
 
 module.exports = router;
 
@@ -47,13 +37,25 @@ module.exports = router;
  *           schema:
  *             type: object
  *             required:
- *               - phone
+ *               - name
+ *               - email
+ *               - password
  *             properties:
  *               name:
  *                 type: string
- *               phone:
+ *               email:
  *                 type: string
-
+ *                 format: email
+ *                 description: must be unique
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 minLength: 8
+ *                 description: At least one number and one letter
+ *             example:
+ *               name: fake name
+ *               email: fake@example.com
+ *               password: password1
  *     responses:
  *       "201":
  *         description: Created

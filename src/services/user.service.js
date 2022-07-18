@@ -10,11 +10,20 @@ const ApiError = require('../utils/ApiError');
 const createUser = async (userBody) => {
   console.log(userBody.phon);
   if (await User.isPhoneTaken(userBody.phone)) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Phone already taken');
+    throw new ApiError(httpStatus.BAD_REQUEST, 'The Phone number already exists, please try another number');
   }
   return User.create(userBody);
 };
 
+
+const createParent = async (userBody) => {
+  console.log(userBody.phon);
+  if (await User.isPhoneTaken(userBody.phone)) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'The Phone number already exists, please try another number');
+  }
+  userBody.role='parent';
+  return User.create(userBody);
+};
 /**
  * Query for users
  * @param {Object} filter - Mongo filter
@@ -106,4 +115,5 @@ module.exports = {
   deleteUserById,
   getUserByPhone,
   getChilds,
+  createParent,
 };

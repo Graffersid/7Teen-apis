@@ -37,16 +37,45 @@ const verifyotp = catchAsync(async (req, res) => {
 
 
 const login = catchAsync(async (req, res) => {
-  const { phone } = req.body;
+  let phone = req.body.phone;  
+  let email = req.body.email;  
   const user = await authService.loginUserWithPhone(phone);
   const otp = await authService.generateOTP(phone);
-  const email = await authService.generateOTP(email);
   let hash = otpTool.createNewOTP(phone,otp,key);
   await emailService.sendOTPEmail(email, otp);
   const tokens = await tokenService.generateAuthTokens(user);
   res.send({ user, tokens,hash });
   
 });
+
+
+const parentRegister = catchAsync(async (req, res) => {
+  let phone = req.body.phone;  
+  let email = req.body.email;  
+  
+  const otp = await authService.generateOTP(phone);
+  
+    let hash = otpTool.createNewOTP(phone,otp,key);
+    const user = await userService.createParent(req.body);
+     
+    const tokens = await tokenService.generateAuthTokens(user);
+    await emailService.sendOTPEmail(email, otp);
+    
+    res.status(httpStatus.CREATED).send({ user, tokens,hash });
+  });
+
+
+  const parentLogin = catchAsync(async (req, res) => {
+    let phone = req.body.phone;  
+    let email = req.body.email;  
+    const user = await authService.loginUserWithPhone(phone);
+    const otp = await authService.generateOTP(phone);
+    let hash = otpTool.createNewOTP(phone,otp,key);
+    await emailService.sendOTPEmail(email, otp);
+    const tokens = await tokenService.generateAuthTokens(user);
+    res.send({ user, tokens,hash });
+    
+  });
 
 const logout = catchAsync(async (req, res) => {
   await authService.logout(req.body.refreshToken);
@@ -80,6 +109,16 @@ const verifyEmail = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const resendOtp = catchAsync(async (req, res) => {
+    let phone = req.body.phone;  
+    let email = req.body.email;  
+    const user = await userService.getUserByPhone(phone);
+    const otp = await authService.generateOTP(phone);
+    let hash = otpTool.createNewOTP(phone,otp,key);
+    await emailService.sendOTPEmail(email, otp);
+    const tokens = await tokenService.generateAuthTokens(user);
+    res.send({ user,tokens,hash });
+});
 module.exports = {
   register,
   login,
@@ -90,4 +129,7 @@ module.exports = {
   sendVerificationEmail,
   verifyEmail,
   verifyotp,
+  parentLogin,
+  parentRegister,
+  resendOtp
 };

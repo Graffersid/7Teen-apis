@@ -9,18 +9,21 @@ const register = {
   }),
 };
 
-const verifyotp={
-  body: Joi.object().keys({
-    otp: Joi.string().length(4).required(),
-    hash: Joi.string().required(),
-    phone: Joi.string().length(10).pattern(/^[0-9]+$/).required(),
-  }),
-};
 
 const login = {
   body: Joi.object().keys({
     phone: Joi.string().length(10).pattern(/^[0-9]+$/).required(),
     email: Joi.string().email().required(),
+  }),
+};
+
+
+
+const verifyotp={
+  body: Joi.object().keys({
+    otp: Joi.string().length(4).required(),
+    hash: Joi.string().required(),
+    phone: Joi.string().length(10).pattern(/^[0-9]+$/).required(),
   }),
 };
 

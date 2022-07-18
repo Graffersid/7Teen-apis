@@ -99,7 +99,7 @@ const verifyOTP = async (verified,phone) => {
   }
   else
   {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Phone verification failed-2');
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'OTP not verified.');
   }
 };
 
