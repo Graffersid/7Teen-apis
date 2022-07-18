@@ -13,6 +13,13 @@ const { tokenTypes } = require('../config/tokens');
  */
 const loginUserWithPhone = async (phone) => {
   const user = await userService.getUserByPhone(phone);
+  if (!user.isEmailVerified ) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'User OTP not Verified');
+  }
+  else if( !user.isParentVerified ){
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Pending Parent Approval');
+  }
+
   if (!user ) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect phone');
   }
@@ -80,11 +87,10 @@ const verifyOTP = async (verified,phone) => {
   if(verified){
       try {
             const user = await userService.getUserByPhone(phone);
-            //console.log(user);
+           
         if (!user) {
           throw new Error();
         }
-        //await Token.deleteMany({ user: user.id, type: tokenTypes.VERIFY_EMAIL });
         await userService.updateUserById(user.id, { isEmailVerified: true });
         return user;
       } catch (error) {

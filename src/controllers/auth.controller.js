@@ -27,7 +27,6 @@ const verifyotp = catchAsync(async (req, res) => {
   const key     = "secretKey"; // Use unique key and keep it secret
   let phone = req.body.phone; 
     let verified = otpTool.verifyOTP(req.body.phone,req.body.otp,req.body.hash,key);
-    console.log(verified);
     
  let user= await authService.verifyOTP(verified,phone);
  res.status('200').send({ user });
@@ -40,23 +39,13 @@ const verifyotp = catchAsync(async (req, res) => {
 const login = catchAsync(async (req, res) => {
   const { phone } = req.body;
   const user = await authService.loginUserWithPhone(phone);
-  if(user.role=='parent')
-  {
-    const user_childs = await userService.getChilds(user);
-   // console.log(user_childs);
-    res.send({ user_childs, tokens });
-  }
-  //console.log(user.id);
-  const user_verified = await authService.validateUser(user);
-  console.log(user_verified);
-  if(user_verified){
-    const otp = await authService.generateOTP(phone);
-    console.log(otp);
-    let hash = otpTool.createNewOTP(phone,otp,key);
-    //await emailService.sendOTPEmail('monika.arora@graffersid.com', otp);
-    const tokens = await tokenService.generateAuthTokens(user);
-    res.send({ user, tokens,hash });
-  }
+  const otp = await authService.generateOTP(phone);
+  const email = await authService.generateOTP(email);
+  let hash = otpTool.createNewOTP(phone,otp,key);
+  await emailService.sendOTPEmail(email, otp);
+  const tokens = await tokenService.generateAuthTokens(user);
+  res.send({ user, tokens,hash });
+  
 });
 
 const logout = catchAsync(async (req, res) => {

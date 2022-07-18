@@ -20,6 +20,7 @@ router
 //router.post('/update-profile', validate(authValidation.register), userController.updateProfile);
 router.post('/get-profile', userController.getUser);
 
+//router.post(auth('/getChilds'), validate(userValidation.getChilds),userController.getChilds);
 module.exports = router;
 
 /**

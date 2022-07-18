@@ -56,20 +56,22 @@ const getUserByPhone = async (phone) => {
 const updateUserById = async (userId, updateBody) => {
  
   const user = await getUserById(userId);
+  //console.log(user);
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
 
   var parent_name=updateBody.parent_name;
   var parent_number=updateBody.parent_number;
-  /*if (updateBody.email && (await User.isEmailTaken(updateBody.email, userId))) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
-  }*/
-  updateBody.parent_username = parent_name.substring(0, 4)+""+parent_number.substr(parent_number.length - 4);
-  console.log(updateBody.parent_username);
+
+  if (updateBody.parent_username && updateBody.parent_number) {
+    updateBody.parent_username = parent_name.substring(0, 4)+""+parent_number.substr(parent_number.length - 4);
+  
+  }
 
   Object.assign(user, updateBody);
   await user.save();
+  
   return user;
 };
 
