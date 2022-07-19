@@ -16,9 +16,9 @@ const loginUserWithPhone = async (phone) => {
   if (!user.isEmailVerified ) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'User OTP not Verified');
   }
-  else if( !user.isParentVerified ){
+ /* else if( !user.isParentVerified ){
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Pending Parent Approval');
-  }
+  }*/
 
   if (!user ) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect phone');
