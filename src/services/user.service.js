@@ -16,13 +16,11 @@ const createUser = async (userBody) => {
 };
 
 
-const createParent = async (userBody) => {
-  console.log(userBody.phon);
-  if (await User.isPhoneTaken(userBody.phone)) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'The Phone number already exists, please try another number');
+const createParent = async (data) => {
+  if (await User.isPhoneTaken(data.phone)) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'The Phone number already exists, please try another number for parent creation');
   }
-  userBody.role='parent';
-  return User.create(userBody);
+  return User.create(data);
 };
 /**
  * Query for users

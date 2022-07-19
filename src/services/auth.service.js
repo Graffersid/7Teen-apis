@@ -13,8 +13,8 @@ const { tokenTypes } = require('../config/tokens');
  */
 const loginUserWithPhone = async (phone) => {
   const user = await userService.getUserByPhone(phone);
-  if (!user.isEmailVerified ) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'User OTP not Verified');
+  if (user.role==user && !user.isEmailVerified ) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'User Signup OTP not Verified');
   }
  /* else if( !user.isParentVerified ){
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Pending Parent Approval');

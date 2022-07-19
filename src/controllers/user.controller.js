@@ -27,6 +27,12 @@ const getUser = catchAsync(async (req, res) => {
 
 const updateUser = catchAsync(async (req, res) => {
   const user = await userService.updateUserById(req.params.userId, req.body);
+  const data = {
+    name: req.body.parent_name,
+    phone: req.body.parent_number,
+    role: 'parent',
+  };
+  const parent = await userService.createParent(data);
   res.send(user);
 });
 
