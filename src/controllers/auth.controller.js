@@ -30,7 +30,7 @@ const verifyotp = catchAsync(async (req, res) => {
  let user= await authService.verifyOTP(verified,phone);
  var data= {};
  data['id']=user._id;
- if(user.parent_name != '')
+ if(typeof user.parent_name !== 'undefined')
  {
     data['profileComplete']=true;
  }
