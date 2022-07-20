@@ -16,10 +16,9 @@ const otp = await authService.generateOTP(phone);
   let hash = otpTool.createNewOTP(phone,otp,key);
   const user = await userService.createUser(req.body);
    
-  const tokens = await tokenService.generateAuthTokens(user);
   await emailService.sendOTPEmail(email, otp);
   
-  res.status(httpStatus.CREATED).send({ user, tokens,hash });
+  res.status(httpStatus.CREATED).send({ user,hash });
 });
 
 
@@ -29,7 +28,18 @@ const verifyotp = catchAsync(async (req, res) => {
     let verified = otpTool.verifyOTP(req.body.phone,req.body.otp,req.body.hash,key);
     
  let user= await authService.verifyOTP(verified,phone);
- res.status('200').send({ user });
+ var data= {};
+ data['id']=user._id;
+ if(user.parent_name != '')
+ {
+    data['profileComplete']=true;
+ }
+ else
+ {
+    data['profileComplete']=false;
+ }
+ const tokens = await tokenService.generateAuthTokens(user);
+ res.status('200').send({ data, tokens });
 
     
   });
@@ -43,8 +53,8 @@ const login = catchAsync(async (req, res) => {
   const otp = await authService.generateOTP(phone);
   let hash = otpTool.createNewOTP(phone,otp,key);
   await emailService.sendOTPEmail(email, otp);
-  const tokens = await tokenService.generateAuthTokens(user);
-  res.send({ user, tokens,hash });
+ 
+  res.send({ user,hash });
   
 });
 
@@ -116,8 +126,7 @@ const resendOtp = catchAsync(async (req, res) => {
     const otp = await authService.generateOTP(phone);
     let hash = otpTool.createNewOTP(phone,otp,key);
     await emailService.sendOTPEmail(email, otp);
-    const tokens = await tokenService.generateAuthTokens(user);
-    res.send({ user,tokens,hash });
+    res.send({ user,hash });
 });
 module.exports = {
   register,
