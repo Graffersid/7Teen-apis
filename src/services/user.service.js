@@ -105,6 +105,24 @@ const deleteUserById = async (userId) => {
   return User.find({ parent_number:user.phone });
 };
 
+
+const updateImageById = async (userId, imgPath) => {
+ 
+  const user = await getUserById(userId);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+
+  var user_image_path=imgPath;
+  
+
+  Object.assign(user, {user_image_path:user_image_path});
+  await user.save();
+  
+  return user;
+};
+
+
 module.exports = {
   createUser,
   queryUsers,
@@ -114,4 +132,5 @@ module.exports = {
   getUserByPhone,
   getChilds,
   createParent,
+  updateImageById,
 };

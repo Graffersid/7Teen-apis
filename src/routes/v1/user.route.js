@@ -4,6 +4,7 @@ const validate = require('../../middlewares/validate');
 const userValidation = require('../../validations/user.validation');
 const userController = require('../../controllers/user.controller');
 
+
 const router = express.Router();
 
 router
@@ -15,9 +16,11 @@ router
   .route('/:userId')
   .get(auth('getUsers'), validate(userValidation.getUser), userController.getUser)
   .patch(auth('manageUsers'), validate(userValidation.updateUser), userController.updateUser)
-  .delete(auth('manageUsers'), validate(userValidation.deleteUser), userController.deleteUser);
+  .delete(auth('manageUsers'), validate(userValidation.deleteUser), userController.deleteUser)
+  .post(auth('manageUsers'),validate(userValidation.uploadPic), userController.uploadPic);
 
 router.post('/get-profile', userController.getUser);
+
 
 //router.post(auth('/getChilds'), validate(userValidation.getChilds),userController.getChilds);
 module.exports = router;

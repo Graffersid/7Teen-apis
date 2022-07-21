@@ -20,6 +20,7 @@ router.post('/send-verification-email', auth(), authController.sendVerificationE
 router.post('/verify-email', validate(authValidation.verifyEmail), authController.verifyEmail);
 
 
+
 /*router
   .route('/')
   .post(auth('parent-register'), validate(authValidation.register), authController.parentRegister)

@@ -1,7 +1,6 @@
 var Conversation = require("../model/Conversation");
 var Users = require("../model/userModel");
 var aUsers = require("../model/adminuserModel");
-const Events = require("../model/eventsModel");
 
 const Notifications = require("../services/notification");
 const Message = require("../model/messageModel");

@@ -1,5 +1,5 @@
 const allRoles = {
-  user: [],
+  user: ['upload-pic'],
   admin: ['getUsers', 'manageUsers'],
   parent: ['approveUser','getChilds','parent-register','parent-login'],
 };

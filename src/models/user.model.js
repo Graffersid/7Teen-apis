@@ -56,6 +56,11 @@ const userSchema = mongoose.Schema(
       required: false,
       trim: true,
     },
+    user_image_path:{
+      type: String,
+      required: false,
+      trim: true,
+    }
     
 
   },

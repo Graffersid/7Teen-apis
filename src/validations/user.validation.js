@@ -1,6 +1,7 @@
 const Joi = require('joi');
 const { password, objectId } = require('./custom.validation');
 
+
 const createUser = {
   body: Joi.object().keys({
     phone: Joi.string().length(10).pattern(/^[0-9]+$/).required(),
@@ -19,6 +20,12 @@ const getUsers = {
 
 const getUser = {
   body: Joi.object().keys({
+    userId: Joi.string().custom(objectId),
+  }),
+};
+
+const uploadPic = {
+  params: Joi.object().keys({
     userId: Joi.string().custom(objectId),
   }),
 };
@@ -57,4 +64,5 @@ module.exports = {
   updateUser,
   deleteUser,
   getChilds,
+  uploadPic,
 };

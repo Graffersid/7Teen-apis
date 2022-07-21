@@ -16,6 +16,10 @@ const ApiError = require('./utils/ApiError');
 
 const app = express();
 
+const serveIndex = require('serve-index')
+app.use('/uploads', express.static('public'), serveIndex('public', {'icons': true}));
+
+
 if (config.env !== 'test') {
   app.use(morgan.successHandler);
   app.use(morgan.errorHandler);

@@ -5,6 +5,7 @@ const otpGen  = require("otp-generator");
 const otpTool = require("otp-without-db");
 const key     = "secretKey"; // Use unique key and keep it secret
 
+
 const { authService, userService, tokenService, emailService } = require('../services');
 
 const register = catchAsync(async (req, res) => {
@@ -128,6 +129,9 @@ const resendOtp = catchAsync(async (req, res) => {
     await emailService.sendOTPEmail(email, otp);
     res.send({ user,hash });
 });
+
+
+
 module.exports = {
   register,
   login,
@@ -140,5 +144,5 @@ module.exports = {
   verifyotp,
   parentLogin,
   parentRegister,
-  resendOtp
+  resendOtp,
 };
