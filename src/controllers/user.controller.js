@@ -32,6 +32,18 @@ const getUser = catchAsync(async (req, res) => {
   res.send(user);
 });
 
+const getUserName = catchAsync(async (req, res) => {
+	var parent_name=req.body.parent_name;
+  	var parent_number=req.body.parent_number;
+
+  if (parent_name && parent_number) {
+    var username = parent_name.substring(0, 4)+""+parent_number.substr(parent_number.length - 4);
+  
+  }
+	res.send(username);
+  });
+
+  
 const updateUser = catchAsync(async (req, res) => {
   const user = await userService.updateUserById(req.params.userId, req.body);
   
@@ -107,4 +119,5 @@ module.exports = {
   updateUser,
   deleteUser,
   uploadPic,
+  getUserName,
 };

@@ -57,6 +57,13 @@ const getChilds = {
   }),
 };
 
+const geUserName = {
+  body: Joi.object().keys({
+    parent_name: Joi.string().required(),
+    parent_number: Joi.string().required(),
+  }),
+};
+
 module.exports = {
   createUser,
   getUsers,
@@ -65,4 +72,5 @@ module.exports = {
   deleteUser,
   getChilds,
   uploadPic,
+  geUserName,
 };
