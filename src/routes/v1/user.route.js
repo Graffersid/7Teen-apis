@@ -7,7 +7,7 @@ const userController = require('../../controllers/user.controller');
 
 const router = express.Router();
 
-router.route('/getUserName/:userId').post(auth('manageUsers'),userController.getUserName);
+router.route('/getUserName/:userId').post(auth('manageUsers'),validate(userValidation.geUserName),userController.getUserName);
 router
   .route('/')
   .post(auth('manageUsers'), validate(userValidation.createUser), userController.createUser)
